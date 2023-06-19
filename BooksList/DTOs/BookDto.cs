@@ -1,3 +1,7 @@
-﻿namespace BooksList.DTOs;
+﻿using BooksList.Domain;
 
-record BookDto(int Id, int UserId, string Title, string Author, int Year, List<string> Genre);
+namespace BooksList.DTOs;
+
+record BookDto(int Id, string Title, string Author, int Year, List<string> Genre);
+
+record UpdateBookDto(string Title, string Author, int Year, List<string> Genre, ReadStatus Status);
