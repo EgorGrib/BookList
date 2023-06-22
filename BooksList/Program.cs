@@ -102,6 +102,23 @@ app.MapPost("/users/{userId:int}/books",
     return Results.Created($"/users/{userId}/books/{book.Id}", book);
 });
 
+app.MapPut("/users/{userId:int}/books/{id:int}/status", 
+    async (IBookRepository repository, int userId, int id, BookStatusDto book) =>
+    {
+        if (!Enum.IsDefined(typeof(ReadStatus), book.Status)) 
+            return Results.BadRequest($"Invalid enum value: {book.Status}");
+
+        var bookFromDb = await repository.GetBookAsync(userId, id);
+
+        bookFromDb.Status = book.Status;
+    
+        await repository.UpdateBookAsync(userId, id, bookFromDb);
+
+        await repository.SaveAsync();
+    
+        return Results.Ok(bookFromDb);
+    });
+
 app.MapPut("/users/{userId:int}/books/{id:int}", 
     async (IBookRepository repository, IUserRepository userRepository, int userId, int id, UpdateBookDto book) =>
 {
