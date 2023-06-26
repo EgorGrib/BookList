@@ -26,6 +26,12 @@ public class UserRepository : IUserRepository
 
         return userFromDb;
     }
+    
+    public async ValueTask<User> GetUserAsync(User user) => 
+        await _dbContext.Users.FirstOrDefaultAsync(u =>
+            string.Equals(u.Name, user.Name) &&
+            string.Equals(u.Password, user.Password)) ??
+        throw new Exception("Incorrect username or password");
 
     public async Task InsertUserAsync(User user)
     {

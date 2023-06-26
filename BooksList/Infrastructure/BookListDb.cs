@@ -16,7 +16,5 @@ public class BookListDb : DbContext
             .HasMany(u => u.Books)
             .WithOne(u => u.User)
             .HasForeignKey(b => b.UserId);
-
-
     }
 }

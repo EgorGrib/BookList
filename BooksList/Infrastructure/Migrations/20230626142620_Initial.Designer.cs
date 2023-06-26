@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BooksList.Infrastructure.Migrations
 {
     [DbContext(typeof(BookListDb))]
-    [Migration("20230619194602_Initial")]
+    [Migration("20230626142620_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -60,6 +60,10 @@ namespace BooksList.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

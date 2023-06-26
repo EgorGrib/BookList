@@ -1,3 +1,3 @@
 ﻿namespace BooksList.DTOs;
 
-record UserDto(int Id, string Name);
+public record UserDto(string Name, string Password);
