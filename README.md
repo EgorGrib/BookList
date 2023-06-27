@@ -7,7 +7,7 @@ To ensure the security of the application, authentication using JWT Bearer is us
 
 ## Database and ORM
 
-The application uses a SQLite database to store information about users and their book lists. To work with the database, Object-Relational Mapping (ORM) is used using Entity Framework Core. ORM provides convenient data access and database schema management. Entity relationships are configured using FluentAPI.
+The application uses a SQLite database to store information about users and their book lists. To work with the database, Object-Relational Mapping (ORM) is used using Entity Framework Core. Entity relationships are configured using FluentAPI.
 
 ## Data model
 
