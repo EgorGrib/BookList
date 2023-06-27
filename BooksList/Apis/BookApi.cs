@@ -9,37 +9,16 @@ public class BookApi
 {
     public void Register(WebApplication app)
     {
-        app.MapGet("/books", [Authorize] async (HttpContext httpContext) =>
-        {
-            return await GetMyBooks(httpContext);
-        }).WithTags("Book");
-
-        async Task<List<Book>> GetMyBooks(HttpContext context)
-        {
-            using var scope = app.Services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<BookListDb>();
-            var userRepository = new UserRepository(db);
-            
-            var userIdClaim = context
-                .User.Claims
-                .FirstOrDefault(c => 
-                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-
-            if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId)) 
-                throw new InvalidOperationException("Authorization failed");
-
-            var userFromDb = await userRepository.GetUserAsync(userId);
-
-            if (userFromDb == null) throw new InvalidOperationException("User not found");
-        
-            return userFromDb.Books;
-        }
-
         app.MapGet("/users/{userId:int}/books", 
             [Authorize] async (IBookRepository repository, int userId) =>
         {
             var books = await repository.GetBooksAsync(userId);
             return Results.Ok(books);
+        }).WithTags("Book");
+        
+        app.MapGet("/books", [Authorize] async (HttpContext httpContext) =>
+        {
+            return await GetMyBooks(httpContext);
         }).WithTags("Book");
 
         app.MapGet("/users/{userId:int}/books/{id:int}", 
@@ -112,5 +91,26 @@ public class BookApi
             
             return Results.NoContent();
         }).WithTags("Book");
+        
+        async Task<List<Book>> GetMyBooks(HttpContext context)
+        {
+            using var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<BookListDb>();
+            var userRepository = new UserRepository(db);
+            
+            var userIdClaim = context
+                .User.Claims
+                .FirstOrDefault(c => 
+                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId)) 
+                throw new InvalidOperationException("Authorization failed");
+
+            var userFromDb = await userRepository.GetUserAsync(userId);
+
+            if (userFromDb == null) throw new InvalidOperationException("User not found");
+        
+            return userFromDb.Books;
+        }
     }
 }

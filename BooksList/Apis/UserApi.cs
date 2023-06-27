@@ -24,7 +24,7 @@ public class UserApi
             return await GetMyUser(context);
         }).WithTags("User");
 
-        app.MapPost("/users", async (IUserRepository repository, LoginUserDto user) =>
+        /*app.MapPost("/users", async (IUserRepository repository, LoginUserDto user) =>
         {
             if (string.IsNullOrEmpty(user.Name)) return Results.BadRequest("Name is required");
             if (string.IsNullOrEmpty(user.Password)) return Results.BadRequest("Password is required");
@@ -33,7 +33,7 @@ public class UserApi
             
             await repository.SaveAsync();
             return Results.Created($"/users", user);
-        }).WithTags("User");
+        }).WithTags("User");*/
 
         app.MapPut("/users/{id:int}", 
             [Authorize] async (IUserRepository repository, int id, LoginUserDto user) =>

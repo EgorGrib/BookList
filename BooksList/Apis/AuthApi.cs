@@ -21,5 +21,16 @@ public class AuthApi
         
             return Results.Ok(token);
         }).WithTags("Auth");
+        
+        app.MapPost("/register", async (IUserRepository repository, LoginUserDto user) =>
+        {
+            if (string.IsNullOrEmpty(user.Name)) return Results.BadRequest("Name is required");
+            if (string.IsNullOrEmpty(user.Password)) return Results.BadRequest("Password is required");
+            
+            await repository.InsertUserAsync(new User(0, user.Name, user.Password));
+            
+            await repository.SaveAsync();
+            return Results.Created($"/users", user);
+        }).WithTags("Auth");
     }
 }
