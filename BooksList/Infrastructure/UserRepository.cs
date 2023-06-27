@@ -1,5 +1,7 @@
 using BooksList.Domain;
+using BooksList.DTOs;
 using Microsoft.EntityFrameworkCore;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace BooksList.Infrastructure;
 
@@ -22,20 +24,32 @@ public class UserRepository : IUserRepository
         var userFromDb = await _dbContext.Users.Include(u => u.Books)
             .FirstOrDefaultAsync(u => u.Id == userId);
 
-        if (userFromDb == null) throw new InvalidOperationException("User not found");;
+        if (userFromDb == null) throw new InvalidOperationException("User not found");
+
+        return userFromDb;
+    }
+
+    public async ValueTask<User> GetUserAsync(LoginUserDto loginUser)
+    {
+        var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u =>
+            string.Equals(u.Name, loginUser.Name));
+
+        if (userFromDb == null) throw new InvalidOperationException("User not found");
+        
+        var isMatch = BCryptNet.Verify(loginUser.Password, userFromDb.Password);
+
+        if (!isMatch)
+        {
+            throw new InvalidOperationException("Incorrect password");
+        }
 
         return userFromDb;
     }
     
-    public async ValueTask<User> GetUserAsync(User user) => 
-        await _dbContext.Users.FirstOrDefaultAsync(u =>
-            string.Equals(u.Name, user.Name) &&
-            string.Equals(u.Password, user.Password)) ??
-        throw new Exception("Incorrect username or password");
-
     public async Task InsertUserAsync(User user)
     {
-        await _dbContext.AddAsync(user);
+        var hashedPassword = BCryptNet.HashPassword(user.Password, BCryptNet.GenerateSalt());
+        await _dbContext.AddAsync(new User(user.Id, user.Name, hashedPassword));
     }
 
     public async Task UpdateUserAsync(User user)
