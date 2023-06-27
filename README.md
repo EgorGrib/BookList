@@ -17,7 +17,7 @@ Each user in the application has a list of books containing the following inform
 - Name of the author of the book
 - An array of genres the book belongs to
 - Year of publication of the book
-- Reading status: the status of the book, which can be one of three options: "To be read", "In progress" or "Read"
+- Reading status: the status of the book, which can be one of three options: "to read", "in progress" or "completed"
 
 ## API Endpoints
 
