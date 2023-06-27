@@ -1,5 +1,5 @@
 # BookList
-The web application allows users to track the progress of reading books, developed on the ASP.NET Core platform using the Minimal APIs. After registering a user, you can perform CRUD operations with books, set the reading status (for reading, in progress, read).
+The web application allows users to track the progress of reading books, developed on the ASP.NET Core platform using the Minimal APIs. After registering a user, you can perform CRUD operations with books, set the reading status (to read, in progress, completed).
 
 ## Authentication and Authorization
 
