@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BooksList.Domain;
 using BooksList.DTOs;
 using BooksList.Infrastructure;
@@ -50,9 +51,7 @@ public class UserApi
             var userRepository = new UserRepository(db);
             
             var userIdClaim = context
-                .User.Claims
-                .FirstOrDefault(c => 
-                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                .User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId)) 
                 throw new InvalidOperationException("Authorization failed");
