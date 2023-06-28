@@ -38,4 +38,17 @@ public class Book
         UserId = userId;
         Status = ReadStatus.ToRead;
     }
+    
+    public Book(int id, User user, string title, string author, 
+        int year, List<string> genre, ReadStatus status, int userId)
+    {
+        Id = id;
+        User = user;
+        Title = title;
+        Author = author;
+        Year = year;
+        Genre = genre;
+        UserId = userId;
+        Status = status;
+    }
 }

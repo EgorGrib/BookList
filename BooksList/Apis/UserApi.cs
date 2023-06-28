@@ -1,9 +1,7 @@
 using BooksList.Domain;
 using BooksList.DTOs;
 using BooksList.Infrastructure;
-using BooksList.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BooksList.Apis;
 
@@ -11,7 +9,7 @@ public class UserApi
 {
     public void Register(WebApplication app)
     {
-        app.MapGet("/users", [Authorize](IUserRepository repository)
+        app.MapGet("/users", [Authorize] (IUserRepository repository)
             => repository.GetUsersAsync())
             .WithTags("User");
 

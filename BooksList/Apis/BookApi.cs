@@ -73,7 +73,7 @@ public class BookApi
 
             var user = await userRepository.GetUserAsync(userId);
 
-            var updatedBook = new Book(id, user, book.Title, book.Author, book.Year, book.Genre, userId);
+            var updatedBook = new Book(id, user, book.Title, book.Author, book.Year, book.Genre, book.Status, userId);
             
             await repository.UpdateBookAsync(userId, id, updatedBook);
 
